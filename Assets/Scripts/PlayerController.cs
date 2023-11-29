@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-  private Animator animator;
+  Animator animator;
   // Start is called before the first frame update
   void Start()
   {
@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-
+    if (Input.GetButtonDown("Jump"))
+    {
+      Debug.Log("Space key was pressed.");
+      animator.SetBool("isRunning", true);
+    }
   }
 }
