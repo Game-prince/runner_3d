@@ -1,13 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class playerController : MonoBehaviour
 {
+
+    public TMP_Text scoreText, coinText;
+    private int score = 0, coins = 0;
+
     Animator animator;
     Rigidbody rb;
 
-    int lane = 2;
+    private int lane = 2;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +24,7 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // if left or right arrow key is pressed
         if (Input.GetKeyDown(KeyCode.LeftArrow) && lane > 1)
         {
             transform.position += new Vector3(-2, 0, 0);
@@ -29,28 +35,52 @@ public class playerController : MonoBehaviour
             transform.position += new Vector3(2, 0, 0);
             lane++;
         }
+
+        // if W is pressed
+        if (Input.GetKey(KeyCode.W))
+        {
+            animator.SetBool("isRunning", true);
+        }
+
+        // if jump is pressed
+        if (Input.GetButtonDown("Jump"))
+        {
+            animator.SetBool("isJumping", true);
+        }
     }
 
     void FixedUpdate()
     {
+        // running logic
         bool isRunning = animator.GetBool("isRunning");
-        bool isJumping = animator.GetBool("isJumping");
-        bool isDead = animator.GetBool("isDead");
-
         if (isRunning)
         {
-
-            transform.position += new Vector3(0, 0, 10 * Time.fixedDeltaTime);
-
-            if (isJumping)
-            {
-                rb.velocity = new Vector3(0, 10 * Time.fixedDeltaTime, 0);
-            }
+            rb.velocity = new Vector3(0, 0, 500 * Time.fixedDeltaTime);
         }
-        else if (isDead)
+
+        // jumping logic
+        bool isJumping = animator.GetBool("isJumping");
+        if (isJumping)
+        {
+            rb.AddForce(new Vector3(0, 100, 0));
+            animator.SetBool("isJumping", false);
+        }
+
+        // dead logic
+        bool isDead = animator.GetBool("isDead");
+        if (isDead)
         {
             rb.velocity = new Vector3(0, 0, 0);
         }
+
+
+        // updating score
+        score = (int)rb.position.z;
+        scoreText.text = "Score : " + score.ToString();
+
+        // updating coins
+        coinText.text = "Coins : " + coins.ToString();
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -59,6 +89,11 @@ public class playerController : MonoBehaviour
         {
             animator.SetBool("isDead", true);
             animator.SetBool("isRunning", false);
+        }
+        else if (other.gameObject.CompareTag("Collectable"))
+        {
+            coins++;
+            Destroy(other.gameObject);
         }
     }
 

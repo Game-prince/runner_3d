@@ -7,9 +7,7 @@ public class ObstacleGenerator : MonoBehaviour
 {
     public GameObject obstaclePrefab;
     public GameObject player;
-    private GameObject[] obstacles = new GameObject[3];
-    private int currentPointer = 0;
-    [SerializeField] public float interval = 2;
+    private float interval = 2;
     private float currentTime = 0;
 
 
@@ -20,15 +18,11 @@ public class ObstacleGenerator : MonoBehaviour
         currentTime += Time.deltaTime;
 
 
-        // removing and creating obstacles which are behind the player
+        // creating obstacles every 2 second
         if (currentTime > interval)
         {
             currentTime = 0;
-            Destroy(obstacles[currentPointer]);
-            GameObject obstacle = Instantiate(obstaclePrefab, new Vector3(positionX[Random.Range(0, 2)], 0.5f, player.transform.position.z + Random.Range(10, 50)), Quaternion.identity);
-            obstacles[currentPointer++] = obstacle;
-
-            currentPointer %= 3;
+            Instantiate(obstaclePrefab, new Vector3(positionX[Random.Range(0, 3)], 0.5f, player.transform.position.z + 50), Quaternion.identity);
         }
     }
 }
