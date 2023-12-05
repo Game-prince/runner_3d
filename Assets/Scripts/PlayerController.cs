@@ -28,13 +28,16 @@ public class playerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow) && lane > 1)
         {
             transform.position += new Vector3(-2, 0, 0);
+            // animator.SetBool("changingLeft", true);
             lane--;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && lane < 3)
         {
             transform.position += new Vector3(2, 0, 0);
+            // animator.SetBool("changingRight", true);
             lane++;
         }
+
 
         // if W is pressed
         if (Input.GetKey(KeyCode.W))
@@ -62,7 +65,7 @@ public class playerController : MonoBehaviour
         bool isJumping = animator.GetBool("isJumping");
         if (isJumping)
         {
-            rb.AddForce(new Vector3(0, 100, 0));
+            // rb.AddForce(new Vector3(0, 100, 0));
             animator.SetBool("isJumping", false);
         }
 
