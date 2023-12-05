@@ -9,7 +9,7 @@ public class CoinGenerator : MonoBehaviour
     public GameObject coinPrefab;
 
     private float currentTime = 0;
-    public Rigidbody rb;
+    public Transform player;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -20,7 +20,7 @@ public class CoinGenerator : MonoBehaviour
         if (currentTime > interval)
         {
             currentTime = 0;
-            Instantiate(coinPrefab, new Vector3(positionX[Random.Range(0, 2)], 0.5f, rb.position.z + Random.Range(10, 50)), Quaternion.Euler(90, 0, 0));
+            Instantiate(coinPrefab, new Vector3(positionX[Random.Range(0, 2)], 0.5f, player.position.z + Random.Range(10, 50)), Quaternion.Euler(90, 0, 0));
 
         }
     }
